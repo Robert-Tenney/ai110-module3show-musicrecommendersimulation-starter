@@ -28,7 +28,9 @@ Some prompts to answer:
 - How do you choose which songs to recommend
 
 You can include a simple diagram or bullet list if helpful.
-
+Some features that each song uses in my system are Genre, Mood and Energy.
+Some infromation that my "UserProfile" Stores are the users preferences in things such as genre, mood, energy and temp. 
+My Recommender computes a score for each song by seeing wether or not a certain feature is the same as or close to the values stored in UserProfile. This is also how my program chooses which songs to recommend by displaying the highest scoring songs based on these values
 ---
 
 ## Getting Started
