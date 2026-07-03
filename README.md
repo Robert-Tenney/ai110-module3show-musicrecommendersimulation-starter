@@ -72,14 +72,27 @@ You can add more tests in `tests/test_recommender.py`.
 
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
+Top Recommendations
+============================================================
+1. Golden Hour Drive — Prism Coast
+   Score: 4.9
+   Reasons: genre match (+2.0), mood match (+1.0), energy similarity (+1.9)
+------------------------------------------------------------
+2. Sunrise City — Neon Echo
+   Score: 4.86
+   Reasons: genre match (+2.0), mood match (+1.0), energy similarity (+1.86)
+------------------------------------------------------------
+3. Gym Hero — Max Pulse
+   Score: 3.64
+   Reasons: genre match (+2.0), energy similarity (+1.64)
+------------------------------------------------------------
+4. Iron Tempo — Max Pulse
+   Score: 3.6
+   Reasons: genre match (+2.0), energy similarity (+1.6)
+------------------------------------------------------------
+5. Rooftop Lights — Indigo Parade
+   Score: 2.98
+   Reasons: mood match (+1.0), energy similarity (+1.98)
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
