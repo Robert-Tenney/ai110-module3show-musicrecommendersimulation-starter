@@ -2,7 +2,7 @@ import csv
  
 # Scoring weights, from the Phase 2 "Algorithm Recipe"
 GENRE_WEIGHT = 2.0
-MOOD_WEIGHT = 3.0
+MOOD_WEIGHT = 1.0
 ENERGY_WEIGHT = 2.0
  
  
@@ -12,15 +12,19 @@ def load_songs(path="data/songs.csv"):
         reader = csv.DictReader(f)
         songs = []
         for row in reader:
-            for numeric_field in ("energy", "danceability", "acousticness", "tempo_bpm"):
+            for numeric_field in ("energy", "danceability", "acousticness", "tempo_bpm", "valence"):
                 if row.get(numeric_field):
                     row[numeric_field] = float(row[numeric_field])
             songs.append(row)
         return songs
  
  
-def score_song(user_prefs, song):
+DEFAULT_WEIGHTS = {"genre": GENRE_WEIGHT, "mood": MOOD_WEIGHT, "energy": ENERGY_WEIGHT}
+ 
+ 
+def score_song(user_prefs, song, weights=None):
     """Score one song against user_prefs, returning (score, list_of_reasons)."""
+    weights = weights or DEFAULT_WEIGHTS
     score = 0.0
     reasons = []
  
@@ -33,17 +37,17 @@ def score_song(user_prefs, song):
         mood_prefs = [mood_prefs]
  
     if song.get("genre") in genre_prefs:
-        score += GENRE_WEIGHT
-        reasons.append(f"genre match (+{GENRE_WEIGHT})")
+        score += weights["genre"]
+        reasons.append(f"genre match (+{weights['genre']})")
  
     if song.get("mood") in mood_prefs:
-        score += MOOD_WEIGHT
-        reasons.append(f"mood match (+{MOOD_WEIGHT})")
+        score += weights["mood"]
+        reasons.append(f"mood match (+{weights['mood']})")
  
     target_energy = user_prefs.get("target_energy")
     if target_energy is not None and "energy" in song:
         energy_gap = abs(song["energy"] - target_energy)
-        energy_points = round(max(0.0, ENERGY_WEIGHT * (1 - energy_gap)), 2)
+        energy_points = round(max(0.0, weights["energy"] * (1 - energy_gap)), 2)
         if energy_points > 0:
             score += energy_points
             reasons.append(f"energy similarity (+{energy_points})")
@@ -51,9 +55,9 @@ def score_song(user_prefs, song):
     return round(score, 2), reasons
  
  
-def recommend_songs(user_prefs, songs, k=5):
+def recommend_songs(user_prefs, songs, k=5, weights=None):
     """Score every song and return the top k as (song, score, reasons) tuples, highest first."""
-    scored = [(song, *score_song(user_prefs, song)) for song in songs]
+    scored = [(song, *score_song(user_prefs, song, weights)) for song in songs]
     ranked = sorted(scored, key=lambda entry: entry[1], reverse=True)
     return ranked[:k]
  
